@@ -1,6 +1,2 @@
 option: -lA
-dirs:
-  - "~"
-  - "."
-  - abc
-  - def
+dir: "~"
