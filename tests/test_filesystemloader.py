@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from asce.template import load_template
+from asce import load_template
 from pathlib import Path
 
 
