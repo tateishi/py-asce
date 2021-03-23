@@ -1,0 +1,6 @@
+option: -lA
+dirs:
+  - "~"
+  - "."
+  - abc
+  - def

@@ -1,1 +1,3 @@
+{% for dir in dirs -%}
 ls {{ option }} {{ dir }}
+{% endfor -%}
