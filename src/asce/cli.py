@@ -7,7 +7,7 @@ from cleo import Command, Application
 
 class RunCommand(Command):
     """
-    Runommand
+    RunCommand
 
     run
         {--t|template=default.tmpl : template filename}
