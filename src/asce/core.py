@@ -10,8 +10,16 @@ def load_template(path, file):
     return env.get_template(file)
 
 
+def inject_time_now(param):
+    if 'now' not in param:
+        from datetime import datetime
+        now = datetime.now()
+        param.update(dict(now=now))
+    return param
+
+
 def load_parameter(path):
     import yaml
 
     with open(path, 'r') as f:
-        return yaml.safe_load(f)
+        return inject_time_now(yaml.safe_load(f))

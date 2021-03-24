@@ -11,7 +11,10 @@ PATH = [
 
 
 def test_filesystemloader():
+    from datetime import datetime
+    now = datetime(2021, 3, 21, 10, 30)
     print(PATH)
     file = 'sample.txt'
     template = load_template(PATH, file)
-    assert template.render(option='-lA', dir='~') == 'ls -lA ~'
+    assert (template.render(option='-lA', dir='~', now=now, today="%Y%m%d")
+            == 'ls -lA ~ 20210321')
