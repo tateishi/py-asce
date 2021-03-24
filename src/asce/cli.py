@@ -15,10 +15,8 @@ class InfoCommand(Command):
     """
 
     def handle(self):
-        template = asce.load_template(asce.get_template_path_list(),
-                                      self.option('template'))
-        parameter = asce.load_parameter(asce.get_parameter_path_list(),
-                                        self.option('parameter'))
+        template = asce.load_template(self.option('template'))
+        parameter = asce.load_parameter(self.option('parameter'))
         print(template.render(parameter))
 
 
@@ -46,12 +44,20 @@ class PathCommand(Command):
 
     def handle(self):
         print('searching template file')
-        self.search_file(asce.get_template_path_list(),
-                         self.option('template'))
+        (path_list, file) = asce.find_paths_file(
+            asce.get_template_path_list(),
+            self.option('template')
+        )
+        self.search_file(path_list, file)
+
         print()
+
         print('searching parameter file')
-        self.search_file(asce.get_parameter_path_list(),
-                         self.option('parameter'))
+        (path_list, file) = asce.find_paths_file(
+            asce.get_parameter_path_list(),
+            self.option('parameter')
+        )
+        self.search_file(path_list, file)
 
 
 def main():

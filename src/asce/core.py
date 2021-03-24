@@ -45,11 +45,22 @@ def get_parameter_path_list():
     return [path / 'parameters' for path in get_path_list()]
 
 
-def load_template(path, file='default.tmpl'):
+def find_paths_file(path_list, pathname):
+    from pathlib import Path
+
+    path = Path(pathname)
+    if path.is_absolute():
+        return ([path.parent], path.name)
+    else:
+        return (path_list, pathname)
+
+
+def load_template(pathname):
     from jinja2 import Environment, FileSystemLoader
 
+    (path_list, file) = find_paths_file(get_template_path_list(), pathname)
     env = Environment(
-        loader=FileSystemLoader(path)
+        loader=FileSystemLoader(path_list)
     )
     return env.get_template(file)
 
@@ -62,9 +73,10 @@ def inject_time_now(param):
     return param
 
 
-def load_parameter(path_list, file='default.yml'):
+def load_parameter(pathname):
     import yaml
 
+    (path_list, file) = find_paths_file(get_parameter_path_list(), pathname)
     for path in path_list:
         if (path / file).is_file():
             with open(path / file, 'r') as f:
