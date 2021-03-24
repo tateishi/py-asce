@@ -2,15 +2,7 @@
 
 
 import asce
-from pathlib import Path
 from cleo import Command, Application
-
-
-DATA_PATH = Path.cwd() / 'data'
-TEMPLATE_PATH = [
-    DATA_PATH / 'templates',
-]
-PARAMETER_PATH = DATA_PATH / 'parameters'
 
 
 class InfoCommand(Command):
@@ -18,18 +10,54 @@ class InfoCommand(Command):
     InfoCommand
 
     info
+        {--t|template=default.tmpl : template filename}
+        {--p|parameter=default.yml : parameter yaml filename}
     """
 
     def handle(self):
-        print(DATA_PATH)
-        template = asce.load_template(TEMPLATE_PATH, 'sample.txt')
-        parameter = asce.load_parameter(PARAMETER_PATH / 'sample.yml')
+        template = asce.load_template(asce.get_template_path_list(),
+                                      self.option('template'))
+        parameter = asce.load_parameter(asce.get_parameter_path_list(),
+                                        self.option('parameter'))
         print(template.render(parameter))
+
+
+class PathCommand(Command):
+    """
+    PathCommand
+
+    path
+        {--t|template=default.tmpl : template filename}
+        {--p|parameter=default.yml : parameter yaml filename}
+    """
+
+    def search_file(self, path_list, filename):
+        found = False
+        for path in path_list:
+            file = path / filename
+            if file.is_file():
+                if found:
+                    print(file, " - found but not used")
+                else:
+                    print(file, " - found")
+                found = True
+            else:
+                print(file, " - not found")
+
+    def handle(self):
+        print('searching template file')
+        self.search_file(asce.get_template_path_list(),
+                         self.option('template'))
+        print()
+        print('searching parameter file')
+        self.search_file(asce.get_parameter_path_list(),
+                         self.option('parameter'))
 
 
 def main():
     application = Application('asce', asce.__version__, complete=True)
     application.add(InfoCommand())
+    application.add(PathCommand())
     application.run()
 
 
