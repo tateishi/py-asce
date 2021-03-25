@@ -15,12 +15,15 @@ class RunCommand(Command):
     """
 
     def handle(self):
+        import subprocess
+
         template = asce.load_template(self.option('template'))
         parameter = asce.load_parameter(self.option('parameter'))
         cmd = template.render(parameter)
         cmd_lists = cmd.split()
         print(template.render(parameter))
         print(cmd_lists)
+        subprocess.run(cmd_lists)
 
 
 class InfoCommand(Command):
