@@ -5,6 +5,17 @@ import asce
 from cleo import Command, Application
 
 
+class ShowCommand(Command):
+    """
+    ShowCommand
+
+    show
+    """
+
+    def handle(self):
+        print([str(p) for p in asce.get_path_list()])
+
+
 class RunCommand(Command):
     """
     RunCommand
@@ -83,6 +94,7 @@ class PathCommand(Command):
 
 def main():
     application = Application('asce', asce.__version__, complete=True)
+    application.add(ShowCommand())
     application.add(RunCommand())
     application.add(InfoCommand())
     application.add(PathCommand())

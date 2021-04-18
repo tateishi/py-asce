@@ -32,7 +32,8 @@ def get_path_list():
     ]
     env = os.getenv('ASCE_DATA')
     if env:
-        path_list.insert(0, Path(env))
+        envs = env.split(":")
+        path_list = envs + path_list
 
     return path_list
 
